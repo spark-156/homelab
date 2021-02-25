@@ -1,0 +1,7 @@
+# Wireguard
+I use wireguard because its lightweight, new, up and coming and most above all; very promising.
+
+## Install
+I installed it natively following this guide:
+https://linuxize.com/post/how-to-set-up-wireguard-vpn-on-ubuntu-20-04/
+
