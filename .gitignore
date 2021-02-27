@@ -1,2 +1,9 @@
+# nginxproxymanager
 nginxproxymanager/data/
 nginxproxymanager/letsencrypt/
+# nextcloud
+nextcloud/nextcloud_admin_password.txt
+nextcloud/nextcloud_admin_user.txt
+nextcloud/postgres_password.txt
+nextcloud/postgres_db.txt
+nextcloud/postgres_user.txt
