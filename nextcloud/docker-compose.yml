@@ -37,12 +37,17 @@ services:
       - nextcloud_admin_user
       - mysql_password
 
+networks:
+  default:
+    external: 
+      name: reverseproxy
+
 secrets:
   nextcloud_admin_password:
-    file: ./nextcloud_admin_password.txt # put admin password to this file
+    file: .secrets/nextcloud_admin_password.txt # put admin password to this file
   nextcloud_admin_user:
-    file: ./nextcloud_admin_user.txt # put admin username to this file
+    file: .secrets/nextcloud_admin_user.txt # put admin username to this file
   mysql_root_password:
-    file: ./mariadb_root_password.txt
+    file: .secrets/mariadb_root_password.txt
   mysql_password:
-    file: ./mariadb_password.txt
+    file: .secrets/mariadb_password.txt

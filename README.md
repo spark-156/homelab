@@ -22,4 +22,4 @@ I also have a docker network called
 ```
 reverseproxy
 ```
-that I connect all my services to so I can easily expose them to the www.
+that I connect all my services to so I can easily expose them to the www with nginx proxy manager.
