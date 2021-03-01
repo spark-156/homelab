@@ -15,3 +15,11 @@ I installed it upon a 120 GB SSD of which 32 GB's are SWAP.
 This might seem like overkill to some but I thought that I'd rather be safe than sorry and just doubled my ram in swap size.
 The rest of the drive is ofcourse formatted as ext4 and mounted at '/'.
 
+## Docker
+I place all my docker secrets in a .secret/ directory at the same level as the accompying docker-compose.yml .
+
+I also have a docker network called
+```
+reverseproxy
+```
+that I connect all my services to so I can easily expose them to the www.
