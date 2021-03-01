@@ -1,0 +1,50 @@
+version: "2"
+services:
+  bookstack:
+    image: ghcr.io/linuxserver/bookstack
+    container_name: bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_URL=https://wiki.lucabergman.nl
+      - DB_HOST=bookstack_db
+      - DB_USER=bookstack
+      - DB_PASS_FILE=/run/secrets/mysql_password
+      - DB_DATABASE=bookstackapp
+    volumes:
+      - ./bookstack/config:/config
+    ports:
+      - 83:80
+    restart: unless-stopped
+    depends_on:
+      - bookstack_db
+    secrets:
+      - mysql_password
+  bookstack_db:
+    image: ghcr.io/linuxserver/mariadb
+    container_name: bookstack_db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
+      - TZ=Europe/Amsterdam
+      - MYSQL_DATABASE=bookstackapp
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD_FILE=/run/secrets/mysql_password
+    volumes:
+      - ./database/config:/config
+    restart: unless-stopped
+    secrets:
+      - mysql_root_password
+      - mysql_password
+
+networks:
+  default:
+    external: 
+      name: reverseproxy
+
+secrets:
+  mysql_root_password:
+    file: .secrets/mysql_root_password.txt
+  mysql_password:
+    file: .secrets/mysql_password.txt
