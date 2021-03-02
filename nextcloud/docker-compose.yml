@@ -1,12 +1,12 @@
 version: '3.2'
 
 services:
-  db:
+  nextcloud_db:
     image: mariadb
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - ./database:/var/lib/mysql
+      - ../../docker/nextcloud/database:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
       - MYSQL_PASSWORD_FILE=/run/secrets/mysql_password
@@ -16,22 +16,22 @@ services:
       - mysql_root_password
       - mysql_password
 
-  app:
+  nextcloud_app:
     image: nextcloud
     restart: always
     ports:
       - 82:80
     volumes:
-      - ./nextcloud:/var/www/html
+      - ../../docker/nextcloud/nextcloud:/var/www/html
     environment:
-      - MYSQL_HOST=db
+      - MYSQL_HOST=nextcloud_db
       - MYSQL_USER=nextcloud
       - MYSQL_DATABASE=nextcloud
       - MYSQL_PASSWORD_FILE=/run/secrets/mysql_password
       - NEXTCLOUD_ADMIN_PASSWORD_FILE=/run/secrets/nextcloud_admin_password
       - NEXTCLOUD_ADMIN_USER_FILE=/run/secrets/nextcloud_admin_user
     depends_on:
-      - db
+      - nextcloud_db
     secrets:
       - nextcloud_admin_password
       - nextcloud_admin_user
@@ -44,9 +44,9 @@ networks:
 
 secrets:
   nextcloud_admin_password:
-    file: .secrets/nextcloud_admin_password.txt # put admin password to this file
+    file: .secrets/nextcloud_admin_password.txt
   nextcloud_admin_user:
-    file: .secrets/nextcloud_admin_user.txt # put admin username to this file
+    file: .secrets/nextcloud_admin_user.txt 
   mysql_root_password:
     file: .secrets/mariadb_root_password.txt
   mysql_password:
