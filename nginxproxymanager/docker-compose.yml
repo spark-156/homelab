@@ -1,29 +1,35 @@
 version: '3'
+
 services:
-  app:
+  nginxproxymanager_app:
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
       - '80:80'
       - '81:81'
       - '443:443'
     environment:
-      DB_MYSQL_HOST: "db"
+      DB_MYSQL_HOST: "nginxproxymanager_db"
       DB_MYSQL_PORT: 3306
       DB_MYSQL_USER: "npm"
       DB_MYSQL_PASSWORD_FILE: /run/secrets/MYSQL_PWD
       DB_MYSQL_NAME: "npm"
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
-  db:
+      - ../../docker/nginxproxymanager/data:/data
+      - ../../docker/nginxproxymanager/letsencrypt:/etc/letsencrypt
+  nginxproxymanager_db:
     image: 'jc21/mariadb-aria:latest'
     environment:
-      MYSQL_ROOT_PASSWORD__FILE: /run/secrets/DB_ROOT_PWD
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/DB_ROOT_PWD
       MYSQL_DATABASE: 'npm'
       MYSQL_USER: 'npm'
-      MYSQL_PASSWORD__FILE: /run/secrets/MYSQL_PWD
+      MYSQL_PASSWORD_FILE: /run/secrets/MYSQL_PWD
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - ../../docker/nginxproxymanager/data/mysql:/var/lib/mysql
+
+networks:
+  default:
+    external:
+      name: reverseproxy
 
 secrets:
   DB_ROOT_PWD:
