@@ -12,7 +12,7 @@ services:
       - DB_PASS_FILE=/run/secrets/mysql_password
       - DB_DATABASE=bookstackapp
     volumes:
-      - ./bookstack/config:/config
+      - ../../docker/bookstack/bookstack/config:/config
     ports:
       - 83:80
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
       - MYSQL_USER=bookstack
       - MYSQL_PASSWORD_FILE=/run/secrets/mysql_password
     volumes:
-      - ./database/config:/config
+      - ../../docker/bookstack/database/config:/config
     restart: unless-stopped
     secrets:
       - mysql_root_password
