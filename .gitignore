@@ -1,8 +1,13 @@
+# bookstack
+
+
+# nextcloud
 nextcloud/database/
-nextcloud/mariadb_password.txt
-nextcloud/mariadb_root_password.txt
 nextcloud/nextcloud/
-nextcloud/nextcloud_admin_password.txt
-nextcloud/nextcloud_admin_user.txt
+
+# nginx proxy manager
 nginxproxymanager/data/
 nginxproxymanager/letsencrypt/
+
+# all .secrets/ directorys
+*/.secrets/
