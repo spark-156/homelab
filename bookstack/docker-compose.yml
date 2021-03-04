@@ -7,7 +7,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - APP_URL=bookstack.lucabergman.nl
+      - APP_URL=https://docs.lucabergman.nl
       - DB_HOST=bookstack_db
       - DB_USER=bookstack
       - FILE__DB_PASSWORD=/run/secrets/mysql_password
@@ -38,6 +38,11 @@ services:
     secrets:
       - mysql_password
       - mysql_root_password
+
+networks:
+  default:
+    external: 
+      name: reverseproxy
 
 secrets:
   mysql_password:
