@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  fireflyiii:
+    image: jc5x/firefly-iii:latest
+    volumes:
+      - ../../docker/fireflyiii/var/www/html/storage/upload:/var/www/html/storage/upload
+    env_file: .env
+    ports:
+      - 84:8080
+    depends_on:
+      - fireflyiiidb
+
+  fireflyiiidb:
+    image: yobasystems/alpine-mariadb:latest
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=firefly
+      - MYSQL_PASSWORD=FireflyDatabasePassword123123123
+      - MYSQL_DATABASE=firefly
+    volumes:
+      - ../../docker/fireflyiii/var/lib/mysql:/var/lib/mysql
+
+networks:
+  default:
+    external: 
+      name: reverseproxy
