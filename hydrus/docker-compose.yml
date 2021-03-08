@@ -1,0 +1,16 @@
+version: '3'
+services:
+  hydrusserver:
+    image: mtbl/hydrus-server-docker
+    volumes:
+      - ../../docker/hydrus/data:/data
+      - ../../docker/hydrus/import:/import
+    ports:
+      - 45870:45870
+      - 45871:45871
+      - 45872:45872
+
+networks:
+  default:
+    external: 
+      name: reverseproxy
