@@ -1,13 +1,1 @@
-# bookstack
-
-
-# nextcloud
-nextcloud/database/
-nextcloud/nextcloud/
-
-# nginx proxy manager
-nginxproxymanager/data/
-nginxproxymanager/letsencrypt/
-
-# all .secrets/ directorys
-*/.secrets/
+*/.secrets/*
