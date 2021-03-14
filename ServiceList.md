@@ -8,7 +8,9 @@
 | [Nextcloud](https://hub.docker.com/_/nextcloud/) | 82 | [cloud.lucabergman.nl](https://cloud.kucabergman.nl) | True | False |
 | [Bookstack](https://github.com/linuxserver/docker-bookstack) | 83 | [wiki.lucabergman.nl](https://wiki.lucabergman.nl) | True | False |
 | [Firefly](https://docs.firefly-iii.org/firefly-iii/installation/docker/) | 84 | [budget.lucabergman.nl](https://budget.lucabergman.nl) | True | False |
-| [Hydrus](https://hub.docker.com/r/suika/hydrus) | 85 | [hydrus.lucabergman.nl](https://hydrus.lucabergman.nl) | True | True |
+| [Deluge](https://docs.linuxserver.io/images/docker-deluge) | 85 | [deluge.lucabergman.nl](https://deluge.lucabergman.nl) | True | True |
+| [Portfolio](https://github.com/spark-156/portfolio) | 86 | [www.lucabergman.nl](https://www.lucabergman.nl) | True | False |
+| [Plex](https://docs.linuxserver.io/images/docker-plex) | 87 | [plex.lucabergman.nl](https://plex.lucabergman.nl) | True | False |
 
 
 ## Bare metal
