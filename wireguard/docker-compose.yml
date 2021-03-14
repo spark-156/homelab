@@ -24,7 +24,7 @@ services:
       - /lib/modules:/lib/modules
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
-    restart: unless-stopped
+    restart: always
   deluge:
     image: ghcr.io/linuxserver/deluge
     container_name: deluge
@@ -37,6 +37,12 @@ services:
     volumes:
       - ../../docker/deluge/config:/config
       - ../../docker/deluge/downloads:/downloads
+      - ../../docker/deluge/movies:/movies
+      - ../../docker/deluge/music:/music
+      - ../../docker/deluge/hentai:/hentai
+      - ../../docker/deluge/porn:/porn
+      - ../../docker/deluge/tv:/tv
+      - ../../docker/deluge/manga:/manga
     restart: unless-stopped
 
 networks:
