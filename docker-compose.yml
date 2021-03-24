@@ -1,0 +1,193 @@
+version: "3"
+services:
+  # wireguard client
+  wireguard_client:
+    image: ghcr.io/linuxserver/wireguard
+    container_name: wireguard_client
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      # - SERVERURL=wireguard.domain.com #optional
+      # - SERVERPORT=51820 #optional
+      # - PEERS=1 #optional
+      # - PEERDNS=auto #optional
+      # - INTERNAL_SUBNET=10.13.13.0 #optional
+      # - ALLOWEDIPS=0.0.0.0/0 #optional
+    ports:
+      - :8112 #deluge webui
+      - :8989 #sonarr
+      - :9117 #jackett
+      - :7878 #radarr
+    volumes:
+      - ./wireguard/config:/config
+      - /lib/modules:/lib/modules
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+  # deluge client connected to wireguard client
+  deluge:
+    image: ghcr.io/linuxserver/deluge
+    container_name: deluge
+    network_mode: "service:wireguard_client"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - DELUGE_LOGLEVEL=error #optional
+    volumes:
+      - ./deluge/config:/config
+      - ./deluge/downloads:/downloads
+      - ./deluge/movies:/movies
+      - ./deluge/music:/music
+      - ./deluge/hentai:/hentai
+      - ./deluge/porn:/porn
+      - ./deluge/tv:/tv
+      - ./deluge/manga:/manga
+      - ./deluge/blackhole:/blackhole
+    restart: unless-stopped
+  # sonarr client connected to wireguard client
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    network_mode: "service:wireguard"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - ./sonarr/config:/config
+      - ./deluge/tv:/tv
+      - ./deluge/tv:/downloads
+    restart: unless-stopped
+  # jackett client connected to wireguard client
+  jackett:
+    image: ghcr.io/linuxserver/jackett
+    container_name: jackett
+    network_mode: "service:wireguard"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - AUTO_UPDATE=true #optional
+      # - RUN_OPTS=<run options here> #optional
+    volumes:
+      - ./jackett/config:/config
+      - ./deluge/blackhole:/downloads
+    restart: unless-stopped
+  # radarr client connected to wireguard server
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    network_mode: "service:wireguard"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - ./radarr/config:/config
+      - ./deluge/movies:/movies
+      - ./deluge/movies:/downloads
+    restart: unless-stopped
+  # plex
+  plex:
+    image: ghcr.io/linuxserver/plex
+    container_name: plex
+    network_mode: bridge
+    ports:
+      - :32400
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM=claim-7G1bJSpk_1B-cyp5n1vJ
+    volumes:
+      - ./plex/config:/config
+      - ./deluge/tv:/tv
+      - ./deluge/movies:/movies
+      - ./deluge/music:/music
+      - ./deluge/hentai:/hentai
+      - ./deluge/porn:/porn
+      - ./deluge/manga:/manga
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
+  # nginx proxy manager
+  nginx_proxy_manager:
+    image: jlesage/nginx-proxy-manager
+    container_name: nginx_proxy_manager
+    ports:
+      - "81:8181"
+      - "80:8080"
+      - "443:4443"
+    volumes:
+      - "./nginx_proxy_manager/appdata:/config:rw"
+    restart: unless-stopped
+  # maria database
+  maria_db:
+    image: mariadb
+    container_name: maria_db
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - ./nextcloud/database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_PASSWORD=
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    secrets:
+      - mysql_root_password
+      - mysql_password
+  # bookstack
+  # bookstack:
+  #   image: ghcr.io/linuxserver/bookstack
+  #   container_name: bookstack
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - APP_URL=https://docs.lucabergman.nl
+  #     - DB_HOST=maria_db
+  #     - DB_USER=bookstack
+  #     - DB_PASSWORD=
+  #     - DB_DATABASE=bookstackapp
+  #   volumes:
+  #     - ./bookstack/config:/config
+  #   ports:
+  #     - :80
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - maria_db
+  #   secrets:
+  #     - mysql_password
+  # nextcloud
+  nextcloud:
+    image: nextcloud
+    container_name: nextcloud
+    restart: always
+    ports:
+      - :80
+    volumes:
+      - ./nextcloud:/var/www/html
+    environment:
+      - MYSQL_HOST=maria_db
+      - MYSQL_USER=nextcloud
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_PASSWORD=
+    depends_on:
+      - maria_db
+    secrets:
+      - nextcloud_admin_password
+      - nextcloud_admin_user
+      - mysql_password
+  # phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - :80
+    environment:
+      - PMA_ARBITRARY=1
