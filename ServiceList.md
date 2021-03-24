@@ -10,8 +10,8 @@
 | [Firefly](https://docs.firefly-iii.org/firefly-iii/installation/docker/) | 84 | [budget.lucabergman.nl](https://budget.lucabergman.nl) | True | False |
 | [Deluge](https://docs.linuxserver.io/images/docker-deluge) | 85 | [deluge.lucabergman.nl](https://deluge.lucabergman.nl) | True | True |
 | [Portfolio](https://github.com/spark-156/portfolio) | 86 | [www.lucabergman.nl](https://www.lucabergman.nl) | True | False |
-| [Plex](https://docs.linuxserver.io/images/docker-plex) | 87 | [plex.lucabergman.nl](https://plex.lucabergman.nl) | True | False |
-
+| [Plex](https://docs.linuxserver.io/images/docker-plex) | 32400 | [plex.lucabergman.nl](https://plex.lucabergman.nl) | True | False |
+| [Radarr](https://docs.linuxserver.io/images/docker-radarr) | 87 | [192.168.178.20:87](http://192.168.178.20:87) | False | False |
 
 ## Bare metal
 
