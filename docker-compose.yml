@@ -167,7 +167,7 @@ services:
   nextcloud:
     image: nextcloud
     container_name: nextcloud
-    restart: always
+    restart: unless-stopped
     ports:
       - 8087:80
     volumes:
@@ -187,7 +187,9 @@ services:
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin
-    restart: always
+    restart: unless-stopped
+    depends_on:
+      - maria_db
     ports:
       - 8088:80
     environment:
