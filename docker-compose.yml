@@ -133,7 +133,7 @@ services:
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - ./nextcloud/database:/var/lib/mysql
+      - ./database:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=
       - MYSQL_PASSWORD=
