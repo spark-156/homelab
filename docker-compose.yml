@@ -133,7 +133,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD= #SET THIS BEFORE LAUNCH
       - TZ=Europe/Amsterdam
       # - MYSQL_DATABASE= #optional
       # - MYSQL_USER= #optional
