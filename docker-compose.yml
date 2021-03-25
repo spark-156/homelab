@@ -103,7 +103,7 @@ services:
       - PUID=1000
       - PGID=1000
       - VERSION=docker
-      - PLEX_CLAIM=claim-7G1bJSpk_1B-cyp5n1vJ
+      - PLEX_CLAIM=claim-jwfu7yF8xVJMqmp4gnJR #required for bridge networking
     volumes:
       - ./plex/config:/config
       - ./deluge/tv:/tv
@@ -128,41 +128,41 @@ services:
     restart: unless-stopped
   # maria database
   maria_db:
-    image: mariadb
+    image: ghcr.io/linuxserver/mariadb
     container_name: maria_db
-    restart: unless-stopped
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    volumes:
-      - ./database:/var/lib/mysql
     environment:
+      - PUID=1000
+      - PGID=1000
       - MYSQL_ROOT_PASSWORD=
-      - MYSQL_PASSWORD=
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-    secrets:
-      - mysql_root_password
-      - mysql_password
+      - TZ=Europe/Amsterdam
+      # - MYSQL_DATABASE= #optional
+      # - MYSQL_USER= #optional
+      # - MYSQL_PASSWORD= #optional
+      # - REMOTE_SQL=http://URL1/your.sql,https://URL2/your.sql #optional
+    volumes:
+      - ./database:/config
+    ports:
+      - 3306:3306
+    restart: unless-stopped
   # bookstack
-  # bookstack:
-  #   image: ghcr.io/linuxserver/bookstack
-  #   container_name: bookstack
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - APP_URL=https://docs.lucabergman.nl
-  #     - DB_HOST=maria_db
-  #     - DB_USER=bookstack
-  #     - DB_PASSWORD=
-  #     - DB_DATABASE=bookstackapp
-  #   volumes:
-  #     - ./bookstack/config:/config
-  #   ports:
-  #     - 8086:80
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - maria_db
-  #   secrets:
-  #     - mysql_password
+  bookstack:
+    image: ghcr.io/linuxserver/bookstack
+    container_name: bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_URL="https://docs.lucabergman.nl
+      - DB_HOST=maria_db
+      - DB_USER=bookstack
+      - DB_PASSWORD=
+      - DB_DATABASE=bookstack
+    volumes:
+      - ./bookstack/config:/config
+    ports:
+      - 8086:80
+    restart: unless-stopped
+    depends_on:
+      - maria_db
   # nextcloud
   nextcloud:
     image: nextcloud
@@ -179,10 +179,6 @@ services:
       - MYSQL_PASSWORD=
     depends_on:
       - maria_db
-    secrets:
-      - nextcloud_admin_password
-      - nextcloud_admin_user
-      - mysql_password
   # phpmyadmin
   phpmyadmin:
     image: phpmyadmin
