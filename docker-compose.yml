@@ -33,7 +33,6 @@ services:
     image: ghcr.io/linuxserver/deluge
     container_name: deluge
     network_mode: "service:wireguard_client"
-    depends_on: wireguard_client
     environment:
       - PUID=1000
       - PGID=1000
@@ -55,7 +54,6 @@ services:
     image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
     network_mode: "service:wireguard_client"
-    depends_on: wireguard_client
     environment:
       - PUID=1000
       - PGID=1000
@@ -70,7 +68,6 @@ services:
     image: ghcr.io/linuxserver/jackett
     container_name: jackett
     network_mode: "service:wireguard_client"
-    depends_on: wireguard_client
     environment:
       - PUID=1000
       - PGID=1000
@@ -86,7 +83,6 @@ services:
     image: ghcr.io/linuxserver/radarr
     container_name: radarr
     network_mode: "service:wireguard_client"
-    depends_on: wireguard_client
     environment:
       - PUID=1000
       - PGID=1000
