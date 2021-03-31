@@ -60,8 +60,8 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - ./sonarr/config:/config
-      - ./deluge/tv:/tv
-      - ./deluge/tv:/downloads
+      - ./deluge/tv:/tv:rw
+      - ./deluge/tv:/downloads:rw
     restart: unless-stopped
   # jackett client connected to wireguard client
   jackett:
@@ -76,7 +76,7 @@ services:
       # - RUN_OPTS=<run options here> #optional
     volumes:
       - ./jackett/config:/config
-      - ./deluge/blackhole:/downloads
+      - ./deluge/blackhole:/downloads:rw
     restart: unless-stopped
   # radarr client connected to wireguard server
   radarr:
@@ -89,8 +89,8 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - ./radarr/config:/config
-      - ./deluge/movies:/movies
-      - ./deluge/movies:/downloads
+      - ./deluge/movies:/movies:rw
+      - ./deluge/movies:/downloads:rw
     restart: unless-stopped
   # plex
   plex:
