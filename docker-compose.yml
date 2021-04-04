@@ -92,29 +92,31 @@ services:
       - ./deluge/movies:/movies:rw
       - ./deluge/movies:/downloads:rw
     restart: unless-stopped
-  # plex
-  plex:
-    image: ghcr.io/linuxserver/plex
-    container_name: plex
-    network_mode: bridge
-    ports:
-      - 8085:32400
+  # jellyfin
+  jellyfin:
+    image: ghcr.io/linuxserver/jellyfin
+    container_name: jellyfin
     environment:
       - PUID=1000
       - PGID=1000
-      - VERSION=docker
-      - PLEX_CLAIM=claim-Ui1g8K4hrer_uzYxUGsW #required for bridge networking
+      - TZ=Europe/London
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.lucabergman.nl
     volumes:
-      - ./plex/config:/config
-      - ./deluge/tv:/tv
-      - ./deluge/movies:/movies
-      - ./deluge/music:/music
-      - ./deluge/hentai:/hentai
-      - ./deluge/porn:/porn
-      - ./deluge/manga:/manga
-      - ./deluge/downloads:/downloads
+      - ./jellyfin/config:/config
+      - ./deluge/tv:/data/tv
+      - ./deluge/movies:/data/movies
+      - ./deluge/music:/data/music
+      - ./deluge/hentai:/data/hentai
+      - ./deluge/porn:/data/porn
+      - ./deluge/manga:/data/manga
+      - ./deluge/downloads:/data/downloads
+    ports:
+      - 8085:8096 # http web 
+      # - 8920:8920 #optional
+      # - 7359:7359/udp #optional
+      # - 1900:1900/udp #optional
     devices:
-      - /dev/dri:/dev/dri
+      - /dev/dri:/dev/dri #optional
     restart: unless-stopped
   # nginx proxy manager
   nginx_proxy_manager:
