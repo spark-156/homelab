@@ -41,12 +41,6 @@ services:
     volumes:
       - ./deluge/config:/config
       - ./deluge/downloads:/downloads
-      - ./deluge/movies:/movies
-      - ./deluge/music:/music
-      - ./deluge/hentai:/hentai
-      - ./deluge/porn:/porn
-      - ./deluge/tv:/tv
-      - ./deluge/manga:/manga
       - ./deluge/blackhole:/blackhole
     restart: unless-stopped
   # sonarr client connected to wireguard client
@@ -60,8 +54,7 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - ./sonarr/config:/config
-      - ./deluge/tv:/tv:rw
-      - ./deluge/tv:/downloads:rw
+      - ./deluge/downloads:/downloads:rw
     restart: unless-stopped
   # jackett client connected to wireguard client
   jackett:
@@ -89,8 +82,7 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - ./radarr/config:/config
-      - ./deluge/movies:/movies:rw
-      - ./deluge/movies:/downloads:rw
+      - ./deluge/downloads:/downloads:rw
     restart: unless-stopped
   # jellyfin
   jellyfin:
@@ -103,12 +95,6 @@ services:
       - JELLYFIN_PublishedServerUrl=https://jellyfin.lucabergman.nl
     volumes:
       - ./jellyfin/config:/config
-      - ./deluge/tv:/data/tv
-      - ./deluge/movies:/data/movies
-      - ./deluge/music:/data/music
-      - ./deluge/hentai:/data/hentai
-      - ./deluge/porn:/data/porn
-      - ./deluge/manga:/data/manga
       - ./deluge/downloads:/data/downloads
     ports:
       - 8085:8096 # http web 
