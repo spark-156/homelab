@@ -212,3 +212,18 @@ services:
       - ./wordpress_josephine/var/www/html:/var/www/html
     depends_on: 
       - maria_db
+
+  photoshow:
+    image: ghcr.io/linuxserver/photoshow
+    container_name: photoshow
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - ./photoshow/config:/config
+      - ./pyload/downloads:/Pictures:ro
+      - ./photoshow/thumbs:/Thumbs
+    ports:
+      - 8093:80
+    restart: unless-stopped
