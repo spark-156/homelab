@@ -197,7 +197,8 @@ services:
       - 8091:8080
     environment: 
       - portHTTP=8080
-  wordpress:
+  wordpress_josephine:
+    container_name: wordpress_josephine
     image: wordpress
     restart: always
     ports:
