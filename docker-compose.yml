@@ -209,4 +209,5 @@ services:
       WORDPRESS_DB_NAME: wordpress_josephine
     volumes:
       - ./wordpress_josephine/var/www/html:/var/www/html
-    depends_on: maria_db
+    depends_on: 
+      - maria_db
