@@ -187,6 +187,6 @@ services:
       - ./pyload/config:/config
       - ./pyload/downloads:/downloads
     ports:
-      - 8000:8000
-      - 7227:7227 #optional
+      - 8089:8000
+      - 8090:7227 #optional
     restart: unless-stopped
