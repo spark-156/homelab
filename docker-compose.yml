@@ -197,3 +197,16 @@ services:
       - 8091:8080
     environment: 
       - portHTTP=8080
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 8092:80
+    environment:
+      WORDPRESS_DB_HOST: maria_db
+      WORDPRESS_DB_USER: wordpress_josephine
+      WORDPRESS_DB_PASSWORD: changeme
+      WORDPRESS_DB_NAME: wordpress_josephine
+    volumes:
+      - ./wordpress_josephine/var/www/html:/var/www/html
+    depends_on: maria_db
