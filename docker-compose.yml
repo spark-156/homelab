@@ -190,3 +190,10 @@ services:
       - 8089:8000
       - 8090:7227 #optional
     restart: unless-stopped
+  scribbl:
+    image: biosmarcel/scribble.rs
+    container_name: scribbl
+    ports: 
+      - 8091:8080
+    environment: 
+      - portHTTP=8080
