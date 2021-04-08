@@ -85,7 +85,7 @@ services:
       - ./radarr/config:/config
       - ./deluge/downloads:/downloads:rw
     restart: unless-stopped
-  # ombi client connected to wireguard server
+  # ombi client 
   ombi:
     image: ghcr.io/linuxserver/ombi
     container_name: ombi
