@@ -226,4 +226,13 @@ services:
       - ./wordpress_josephine/var/www/html:/var/www/html
     depends_on: 
       - maria_db
-      
+  fireflyiii:
+    image: jc5x/firefly-iii:latest
+    volumes:
+      - ./firefly/upload:/var/www/html/storage/upload
+    env_file: ./firefly/.env
+    # example .env file is found in the fireflyiii github repo!
+    ports:
+      - 8094:8080
+    depends_on:
+      - maria_db
