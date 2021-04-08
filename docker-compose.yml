@@ -85,6 +85,21 @@ services:
       - ./radarr/config:/config
       - ./deluge/downloads:/downloads:rw
     restart: unless-stopped
+  # ombi client connected to wireguard server
+  ombi:
+    image: ghcr.io/linuxserver/ombi
+    container_name: ombi
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - BASE_URL=/ombi #optional
+    volumes:
+      - /path/to/appdata/config:/config
+    ports:
+      - 8093:3579
+    restart: unless-stopped
+  # plex
   plex:
     image: ghcr.io/linuxserver/plex
     container_name: plex
