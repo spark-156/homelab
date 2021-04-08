@@ -42,6 +42,7 @@ services:
       - ./deluge/config:/config
       - ./deluge/downloads:/downloads
       - ./deluge/blackhole:/blackhole
+      - ./deluge/personal:/personal
     restart: unless-stopped
   # sonarr client connected to wireguard client
   sonarr:
