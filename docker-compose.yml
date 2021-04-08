@@ -84,23 +84,7 @@ services:
       - ./radarr/config:/config
       - ./deluge/downloads:/downloads:rw
     restart: unless-stopped
-  # emby 
-  emby:
-    image: ghcr.io/linuxserver/emby
-    container_name: emby
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Amsterdam
-    volumes:
-      - ./emby/config:/config
-      - ./deluge/downloads:/data/downloads
-    ports:
-      - 8085:8096 #http webui
-      # - 8920:8920 #optional
-    devices:
-      - /dev/dri:/dev/dri # intel quicksync
-    restart: unless-stopped
+  
   # nginx proxy manager
   nginx_proxy_manager:
     image: jlesage/nginx-proxy-manager
