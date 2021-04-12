@@ -20,7 +20,10 @@ I made an example.env file that has all the variables you need to fill out on yo
 Please read this section completely before blindly following it.
 
 Clone this repo and follow the .env file instructions above. Make sure you have docker and docker-compose installed and run the following command:
-
+```
+make install
+```
+or the equivalent:
 ```
 docker-compose --env-file ./.env up -d maria_db phpmyadmin
 ```
