@@ -25,7 +25,7 @@ make install
 ```
 or the equivalent:
 ```
-docker-compose --env-file ./.env up -d maria_db phpmyadmin
+docker-compose --env-file .env up -d maria_db phpmyadmin
 ```
 
 All your applications are now up and running. Before you go any further you need to open up phpmyadmin under port 8088 and log in as root with hostname maria_db. You set the password yourself in the .env file.
@@ -50,7 +50,7 @@ make start
 ```
 Or the following equivalent command
 ```
-docker-compose --env-file ./.env up -d 
+docker-compose --env-file .env up -d 
 ```
 # Updating containers
 Run the following command to update and reboot containers in one go:
@@ -59,7 +59,7 @@ make update
 ```
 Or the equivalent:
 ```
-docker-compose pull && docker-compose --env-file ./.env up -d
+docker-compose pull && docker-compose --env-file .env up -d
 ```
 
 # Backup
