@@ -35,6 +35,9 @@ nextcloud
 ```
 bookstack
 ```
+```
+wordpress_josephine
+```
 
 and add the corresponding users under the same name within those databases. Give them full rights and set the passwords the same as you did in the .env file.
 
