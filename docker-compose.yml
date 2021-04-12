@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-  # wireguard client
   wireguard_client:
     image: ghcr.io/linuxserver/wireguard
     container_name: wireguard_client
@@ -28,7 +27,6 @@ services:
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     restart: unless-stopped
-  # deluge client connected to wireguard client
   deluge:
     image: ghcr.io/linuxserver/deluge
     container_name: deluge
@@ -44,7 +42,6 @@ services:
       - ./deluge/blackhole:/blackhole
       - ./deluge/personal:/personal
     restart: unless-stopped
-  # sonarr client connected to wireguard client
   sonarr:
     image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
@@ -57,7 +54,6 @@ services:
       - ./sonarr/config:/config
       - ./deluge/downloads:/downloads:rw
     restart: unless-stopped
-  # jackett client connected to wireguard client
   jackett:
     image: ghcr.io/linuxserver/jackett
     container_name: jackett
@@ -72,7 +68,6 @@ services:
       - ./jackett/config:/config
       - ./deluge/blackhole:/downloads:rw
     restart: unless-stopped
-  # radarr client connected to wireguard server
   radarr:
     image: ghcr.io/linuxserver/radarr
     container_name: radarr
@@ -85,7 +80,6 @@ services:
       - ./radarr/config:/config
       - ./deluge/downloads:/downloads:rw
     restart: unless-stopped
-  # ombi client 
   ombi:
     image: ghcr.io/linuxserver/ombi
     container_name: ombi
@@ -93,13 +87,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Amsterdam
-      - BASE_URL=/ombi #optional
+      # - BASE_URL=/ombi #optional
     volumes:
       - ./ombi/config:/config
     ports:
       - 8093:3579
     restart: unless-stopped
-  # plex
   plex:
     image: ghcr.io/linuxserver/plex
     container_name: plex
@@ -115,7 +108,6 @@ services:
       - ./deluge/downloads:/movies
       - ./deluge/downloads:/music
     restart: unless-stopped
-  # nginx proxy manager
   nginx_proxy_manager:
     image: jlesage/nginx-proxy-manager
     container_name: nginx_proxy_manager
@@ -126,14 +118,13 @@ services:
     volumes:
       - "./nginx_proxy_manager/appdata:/config:rw"
     restart: unless-stopped
-  # maria database
   maria_db:
     image: ghcr.io/linuxserver/mariadb
     container_name: maria_db
     environment:
       - PUID=1000
       - PGID=1000
-      - MYSQL_ROOT_PASSWORD=changeme
+      - MYSQL_ROOT_PASSWORD=${maria_db_root_password}
       - TZ=Europe/Amsterdam
       # - MYSQL_DATABASE= #optional
       # - MYSQL_USER= #optional
@@ -144,7 +135,6 @@ services:
     ports:
       - 3306:3306
     restart: unless-stopped
-  # bookstack
   bookstack:
     image: ghcr.io/linuxserver/bookstack
     container_name: bookstack
@@ -154,8 +144,8 @@ services:
       - APP_URL=https://docs.lucabergman.nl
       - DB_HOST=maria_db
       - DB_USER=bookstack
-      - DB_PASSWORD=changeme
       - DB_DATABASE=bookstack
+      - DB_PASSWORD=${bookstack_db_password}
     volumes:
       - ./bookstack/config:/config
     ports:
@@ -163,7 +153,6 @@ services:
     restart: unless-stopped
     depends_on:
       - maria_db
-  # nextcloud
   nextcloud:
     image: nextcloud
     container_name: nextcloud
@@ -176,10 +165,9 @@ services:
       - MYSQL_HOST=maria_db
       - MYSQL_USER=nextcloud
       - MYSQL_DATABASE=nextcloud
-      - MYSQL_PASSWORD=changeme
+      - MYSQL_PASSWORD=${nextcloud_db_password}
     depends_on:
       - maria_db
-  # phpmyadmin
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin
@@ -190,20 +178,23 @@ services:
       - 8088:80
     environment:
       - PMA_ARBITRARY=1
-  pyload:
-    image: ghcr.io/linuxserver/pyload
-    container_name: pyload
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Amsterdam
-    volumes:
-      - ./pyload/config:/config
-      - ./pyload/downloads:/downloads
-    ports:
-      - 8089:8000
-      - 8090:7227 #optional
-    restart: unless-stopped
+  #    
+  #! Currently disabled since I am not using it
+  #
+  # pyload:
+  #   image: ghcr.io/linuxserver/pyload
+  #   container_name: pyload
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Europe/Amsterdam
+  #   volumes:
+  #     - ./pyload/config:/config
+  #     - ./pyload/downloads:/downloads
+  #   ports:
+  #     - 8089:8000
+  #     # - 8090:7227 #optional
+  #   restart: unless-stopped
   scribbl:
     image: biosmarcel/scribble.rs
     container_name: scribbl
@@ -220,19 +211,22 @@ services:
     environment:
       WORDPRESS_DB_HOST: maria_db
       WORDPRESS_DB_USER: wordpress_josephine
-      WORDPRESS_DB_PASSWORD: changeme
+      WORDPRESS_DB_PASSWORD: ${wordpress_josepine_db_password}
       WORDPRESS_DB_NAME: wordpress_josephine
     volumes:
       - ./wordpress_josephine/var/www/html:/var/www/html
     depends_on: 
       - maria_db
-  fireflyiii:
-    image: jc5x/firefly-iii:latest
-    volumes:
-      - ./firefly/upload:/var/www/html/storage/upload
-    env_file: ./firefly/.env
-    # example .env file is found in the fireflyiii github repo!
-    ports:
-      - 8094:8080
-    depends_on:
-      - maria_db
+  #
+  #! Currently disabled since I am not using it
+  #
+  # fireflyiii:
+  #   image: jc5x/firefly-iii:latest
+  #   volumes:
+  #     - ./firefly/upload:/var/www/html/storage/upload
+  #   env_file: ./firefly/.env
+  #   # example .env file is found in the fireflyiii github repo!
+  #   ports:
+  #     - 8094:8080
+  #   depends_on:
+  #     - maria_db
