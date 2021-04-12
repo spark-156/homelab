@@ -30,7 +30,7 @@ docker-compose --env-file .env up -d maria_db phpmyadmin
 
 All your applications are now up and running. Before you go any further you need to open up phpmyadmin under port 8088 and log in as root with hostname maria_db. You set the password yourself in the .env file.
 
-Next the following databases:
+Next create the following databases and users for those databases:
 
 ``` 
 nextcloud
