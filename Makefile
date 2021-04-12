@@ -1,9 +1,9 @@
 start:
-	docker-compose up -d
+	docker-compose --env-file .env up -d
 
 update:
 	docker-compose pull; \
-	docker-compose up -d
+	docker-compose --env-file .env up -d
 
 stop:
 	docker-compose down
